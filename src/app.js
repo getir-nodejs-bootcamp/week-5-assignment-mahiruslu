@@ -1,6 +1,12 @@
 const express = require('express');
 const { ProductsRouter, UsersRouter } = require('./routes');
 
+const config  = require('./config');
+const loaders = require('./loaders');
+
+config();
+loaders();
+
 const app = express();
 
 app.use(express.json());

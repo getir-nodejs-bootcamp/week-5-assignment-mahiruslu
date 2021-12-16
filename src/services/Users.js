@@ -13,7 +13,7 @@ const getAllUsers = (req, res) => {
 
 const insertUser = (req, res) => {
     const user = new User(req.body);
-    user.save((err, user) => {
+    return user.save((err, user) => {
         if (err) {
             res.status(hs.INTERNAL_SERVER_ERROR).send(err);
         }

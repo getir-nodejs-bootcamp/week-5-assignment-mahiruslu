@@ -1,6 +1,13 @@
 const router = require('express').Router();
-const {get} = require('../controllers/Users');
+const {getUsers, getOneUser, insert} = require('../controllers/Users');
+const validate = require('../middlewares/validate');
+const {createUser} = require('../validations/Users');
 
-router.route('/').get(get);
+router.route('/').get(getUsers);
+
+router.route('/:id').get(getOneUser);
+
+router.route('/').post(validate(createUser),insert);
+
 
 module.exports = router;
