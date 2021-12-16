@@ -1,24 +1,29 @@
 const hs = require('http-status');
-const { getAllUsers, insertUser, updateUser, deleteUser } = require('../services/Users');
+const { getAllUsers, getOneUser, insertUser, updateUser, deleteUser } = require('../services/Users');
 
 const getUsers =  (req, res) => {
-    const users =  getAllUsers();
-    res.status(hs.OK).send(users);
+    getAllUsers()
+    .then(users => {
+        res.status(hs.OK).send(users);
+    }
+    )
+    .catch(err => {
+        res.status(hs.INTERNAL_SERVER_ERROR).send(err);
+    });
+    
 };
-const getOneUser =  (req, res) => {
-  getAllUsers()?.find(user => user.id === req.params.id)
+const getOne =  (req, res) => {
+  getOneUser(req.params.id)
     .then(user => {
-        if (!user) {
-            res.status(hs.NOT_FOUND).send({
-                message: 'User not found'
-            });
-            return;
+        res.status(hs.OK).send(user);
+        console.log(user)
         }
-    res.status(hs.OK).send(user);
-}).catch(err => {
-    res.status(hs.INTERNAL_SERVER_ERROR).send(err);
-});
-}
+    )
+    .catch(err => {
+        res.status(hs.NOT_FOUND).send(err);
+    }
+    );
+};
 
 function insert(req, res) {
     insertUser(req.body)
@@ -44,7 +49,7 @@ const update =  (req, res) => {
 
 module.exports = {
     getUsers,
-    getOneUser,
+    getOne,
     insert,
     update
 };
