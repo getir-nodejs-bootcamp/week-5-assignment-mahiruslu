@@ -48,7 +48,13 @@ const updateUser = Joi.object({
     )
 });
 
+const loginUser = Joi.object({
+    email: Joi.string().required().email().min(8),
+    password: Joi.string().required().min(8)
+});
+
 module.exports ={
     createUser,
-    updateUser
+    updateUser,
+    loginUser
 }

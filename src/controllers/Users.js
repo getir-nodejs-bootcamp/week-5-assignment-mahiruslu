@@ -1,5 +1,6 @@
 const hs = require('http-status');
-const { getAllUsers, getOneUser, insertUser, updateUser, deleteUser } = require('../services/Users');
+const { getAllUsers, getOneUser, insertUser, updateUser,loginControl, deleteUser } = require('../services/Users');
+const { hashPassword,generateAccessToken,generateRefreshToken} = require('../scripts/Utils/helpers');
 
 const getUsers =  (req, res) => {
     getAllUsers()
@@ -16,7 +17,6 @@ const getOne =  (req, res) => {
   getOneUser(req.params.id)
     .then(user => {
         res.status(hs.OK).send(user);
-        console.log(user)
         }
     )
     .catch(err => {
@@ -45,11 +45,31 @@ const update =  (req, res) => {
     });
 };
 
-
+const login = (req, res) => {
+    // req.body.password = hashPassword(req.body.password);
+    loginControl(req.body)
+        .then(user => {
+            if (!user) return res.status(hs.UNAUTHORIZED).send({ message: 'Invalid email or password' });
+            user = {
+                ...user.toObject(),
+                tokens:{
+                    accessToken: generateAccessToken(user),
+                    refreshToken: generateRefreshToken(user)
+                }
+            },
+            delete user.password;
+            res.status(hs.OK).send(user);
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(hs.INTERNAL_SERVER_ERROR).send(err);
+        });
+};
 
 module.exports = {
     getUsers,
     getOne,
     insert,
-    update
+    update,
+    login
 };

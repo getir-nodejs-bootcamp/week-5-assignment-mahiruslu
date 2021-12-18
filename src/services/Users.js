@@ -5,8 +5,15 @@ const hs = require('http-status');
 const getAllUsers = () => {
     return User.find({});
 };
-const getOneUser = (where) => {
-    return User.findOne(where);
+
+const getOneUser = (id) => {
+    const user = User.findOne({_id: id});
+    return user;
+};
+
+const loginControl = (where) => {
+    const user = User.findOne(where);
+    return user;
 };
 
 const insertUser = (data) => {
@@ -37,5 +44,6 @@ module.exports = {
     getOneUser,
     insertUser,
     updateUser,
-    deleteUser
+    deleteUser,
+    loginControl
 };
