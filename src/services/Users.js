@@ -38,6 +38,11 @@ const deleteUser = (req, res) => {
     });
 };
 
+const updatePassword = (where,data) => {
+    console.log(where);
+    console.log(data);
+    return User.findOneAndUpdate(where, data, { new: true })
+};
 
 module.exports = {
     getAllUsers,
@@ -45,5 +50,6 @@ module.exports = {
     insertUser,
     updateUser,
     deleteUser,
-    loginControl
+    loginControl,
+    updatePassword
 };

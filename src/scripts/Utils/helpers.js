@@ -8,7 +8,6 @@ const hashPassword = (password) => {
 };
 
 const generateAccessToken = (user) => {
-    console.log(process.env.ACCESS_TOKEN_SECRET);
     return jwt.sign({
         email: user.email,
         ...user
@@ -16,7 +15,6 @@ const generateAccessToken = (user) => {
 }
 
 const generateRefreshToken = (user) => {
-    console.log(process.env.REFRESH_TOKEN_SECRET);
     return jwt.sign({
         email: user.email,
         ...user
