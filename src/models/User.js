@@ -5,6 +5,7 @@ const UserSchema = new Mongoose.Schema({
     last_name: String,
     email: String,
     password: String,
+    isAdmin: false,    
     phones : [{
         number: String,
         type: String
