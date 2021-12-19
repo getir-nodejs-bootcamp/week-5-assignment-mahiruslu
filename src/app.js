@@ -3,9 +3,11 @@ const { ProductsRouter, UsersRouter } = require('./routes');
 
 const config  = require('./config');
 const loaders = require('./loaders');
+const events = require('./scripts/events');
 
 config();
 loaders();
+events();
 
 const app = express();
 

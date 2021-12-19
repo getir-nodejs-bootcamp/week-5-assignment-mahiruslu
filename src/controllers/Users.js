@@ -71,12 +71,15 @@ const login = (req, res) => {
 
 const resetPassword = (req, res) => {
     const newPassword = uuid.v4().split('-')[0];
-    console.log(newPassword);
     req.body.password = hashPassword("newPassword");
     updatePassword({email: req.body.email}, {password : req.body.password})
         .then(user => {
             if(!user) return res.status(hs.NOT_FOUND).send({message: 'User not found'});
-            eventEmitter.emit('send_email', "Your new password is: " + newPassword);
+            user = {
+                newPassword: newPassword,
+                ...user.toObject()
+                }
+            eventEmitter.emit('send_email',user);
             res.status(hs.OK).send(user);
         })
         .catch(err => {
